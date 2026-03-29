@@ -1,9 +1,10 @@
-# roman-numeral
+# roman-num
 
-Roman numeral converter. Zero-dependency, single-file Python CLI.
+Single-file Python CLI. Zero dependencies.
 
 ## Usage
 
 ```bash
-python3 roman_num.py --help
+python3 roman_num.py
+python3 roman_num.py test
 ```
