@@ -1,8 +1,13 @@
-# roman-num
-Convert between Roman numerals and integers. Zero dependencies.
+# roman-numerals
+
+Roman Numeral Converter. Zero-dependency, single-file Python CLI.
+
 ## Usage
+
+```bash
+python3 roman_num.py --help
 ```
-python3 roman_num.py 2026
-python3 roman_num.py MMXXVI
-python3 roman_num.py 42 99 1776
-```
+
+## License
+
+MIT

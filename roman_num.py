@@ -1,35 +1,44 @@
 #!/usr/bin/env python3
-"""roman_num - Convert between Roman numerals and integers."""
-import sys
+"""Roman Numerals - Convert between Arabic and Roman numeral systems."""
+import sys, re
 
-VALS = [(1000,'M'),(900,'CM'),(500,'D'),(400,'CD'),(100,'C'),(90,'XC'),
-        (50,'L'),(40,'XL'),(10,'X'),(9,'IX'),(5,'V'),(4,'IV'),(1,'I')]
-ROM = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000}
+ROMAN = [(1000,"M"),(900,"CM"),(500,"D"),(400,"CD"),(100,"C"),(90,"XC"),
+         (50,"L"),(40,"XL"),(10,"X"),(9,"IX"),(5,"V"),(4,"IV"),(1,"I")]
 
 def to_roman(n):
-    r = ''
-    for val, sym in VALS:
-        while n >= val: r += sym; n -= val
-    return r
+    if n <= 0 or n >= 4000: return "N/A"
+    result = ""
+    for val, sym in ROMAN:
+        while n >= val: result += sym; n -= val
+    return result
 
 def from_roman(s):
-    total = 0
-    for i, c in enumerate(s.upper()):
-        val = ROM.get(c, 0)
-        if i+1 < len(s) and val < ROM.get(s[i+1].upper(), 0): total -= val
-        else: total += val
-    return total
+    vals = {"I":1,"V":5,"X":10,"L":50,"C":100,"D":500,"M":1000}
+    result = 0; s = s.upper()
+    for i, c in enumerate(s):
+        if i + 1 < len(s) and vals.get(c, 0) < vals.get(s[i+1], 0):
+            result -= vals[c]
+        else:
+            result += vals.get(c, 0)
+    return result
+
+def is_valid_roman(s):
+    return bool(re.match(r"^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$", s.upper()))
 
 def main():
-    args = sys.argv[1:]
-    if not args or '-h' in args:
-        print("Usage: roman_num.py 42 | roman_num.py XLII"); return
-    for a in args:
-        if a.isdigit():
-            n = int(a); print(f"  {n} = {to_roman(n)}")
-        elif all(c.upper() in ROM for c in a):
-            print(f"  {a.upper()} = {from_roman(a)}")
+    if len(sys.argv) > 1:
+        arg = sys.argv[1]
+        if arg.isdigit():
+            n = int(arg)
+            print(f"{n} = {to_roman(n)}")
         else:
-            print(f"  {a}: invalid")
+            print(f"{arg} = {from_roman(arg)} {'(valid)' if is_valid_roman(arg) else '(invalid format)'}")
+    else:
+        print("=== Roman Numerals ===\n")
+        for n in [1, 4, 9, 14, 42, 99, 399, 1776, 2024, 3999]:
+            r = to_roman(n)
+            back = from_roman(r)
+            print(f"  {n:5d} = {r:15s} -> {back}")
 
-if __name__ == '__main__': main()
+if __name__ == "__main__":
+    main()
